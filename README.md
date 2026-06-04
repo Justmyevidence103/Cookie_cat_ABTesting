@@ -1,1 +1,128 @@
 # Cookie_cat_ABTesting
+================================================================================
+  COOKIE CATS A/B TESTING — FULL ANALYSIS REPORT
+  Generated: 2026-05-31 17:15:47
+================================================================================
+
+EXPERIMENT DESCRIPTION
+─────────────────────
+Game   : Cookie Cats (mobile puzzle game)
+Test   : Gate position — players hit a timed gate at level 30 (control)
+         vs level 40 (treatment)
+Goal   : Determine which gate position maximises player retention
+Metrics: 1-day retention, 7-day retention, game rounds played
+
+
+1. DATASET OVERVIEW
+───────────────────
+  Total users      : 90,189
+  Control  (Gate 30): 44,700 users (49.6%)
+  Treatment(Gate 40): 45,489 users (50.4%)
+
+  ✔ Groups are well-balanced (random assignment assumed)
+
+
+2. KEY METRICS
+──────────────
+  ┌─────────────────────────┬──────────────┬──────────────┬───────────┐
+  │ Metric                  │  Gate 30 (C) │  Gate 40 (T) │   Lift    │
+  ├─────────────────────────┼──────────────┼──────────────┼───────────┤
+  │ 1-Day Retention         │     44.82%   │     44.23%   │   -1.32%  │
+  │ 7-Day Retention         │     19.02%   │     18.20%   │   -4.31%  │
+  │ Avg Game Rounds         │      52.5    │      51.3    │     —     │
+  │ Median Game Rounds      │        17    │        16    │     —     │
+  └─────────────────────────┴──────────────┴──────────────┴───────────┘
+
+
+3. STATISTICAL TESTS  (α = 0.05)
+──────────────────────────────────
+
+  [A] 1-Day Retention — Chi-Square Test
+      H0: no difference in 1-day retention between groups
+      χ² = 3.1591,  p = 0.075505
+      Cohen's h = -0.0119 (negligible effect)
+      Result: NOT significant
+
+  [B] 7-Day Retention — Chi-Square Test
+      H0: no difference in 7-day retention between groups
+      χ² = 9.9591,  p = 0.001601
+      Cohen's h = -0.0211 (negligible effect)
+      Result: SIGNIFICANT
+
+  [C] Game Rounds — Mann-Whitney U Test (non-parametric)
+      H0: no difference in game rounds distribution between groups
+      U = 1024331250,  p = 0.050209
+      Result: NOT significant
+
+
+4. BOOTSTRAP ANALYSIS  (5,000 iterations, 95% CI)
+──────────────────────────────────────────────────
+
+  [1-Day Retention]
+    Observed difference : -0.5905 pp
+    95% CI              : [-1.2455 pp,  +0.0585 pp]
+    Zero in CI?         : Yes — NOT significant
+
+  [7-Day Retention]
+    Observed difference : -0.8201 pp
+    95% CI              : [-1.2989 pp,  -0.3248 pp]
+    Zero in CI?         : No  — SIGNIFICANT
+
+
+5. INTERPRETATION & BUSINESS INSIGHTS
+──────────────────────────────────────
+
+  1-DAY RETENTION
+  ───────────────
+  Gate 30 retains 44.82% of players after one day; Gate 40 retains
+  44.23%.  The difference (-1.32% relative lift) is
+  NOT statistically significant
+  (p = 0.0755).  The effect size is negligible (Cohen's h ≈ -0.012),
+  so even if real, the practical impact on day-1 is minimal.
+
+  7-DAY RETENTION  ← KEY FINDING
+  ──────────────────────────────
+  This is the most important metric for long-term monetisation.
+  Gate 30 retains 19.02% of players after seven days; Gate 40 retains
+  18.20%.
+  Relative lift: -4.31%
+  Chi-square p-value: 0.001601 → SIGNIFICANT
+  Bootstrap 95% CI crosses zero: No
+
+  ► Gate 30 produces HIGHER 7-day retention than Gate 40.
+  This aligns with the psychological concept of 'hedonic adaptation':
+  players who hit the gate earlier (level 30) feel a stronger urge to
+  return after the wait; players who progress further (level 40) may
+  become more satisfied and less motivated to return.
+
+  GAME ENGAGEMENT
+  ───────────────
+  Median rounds are similar between groups (17 vs 16),
+  suggesting the gate position does not meaningfully change how much
+  players play before they either churn or are gated.
+
+
+6. RECOMMENDATION
+─────────────────
+  ✅  KEEP Gate 30 (do NOT ship Gate 40).
+
+  Rationale:
+  • 7-day retention is the stronger predictor of long-term revenue.
+  • Gate 30 wins on 7-day retention with statistical significance.
+  • The difference in 1-day retention is negligible in practical terms.
+  • Moving the gate later (to level 40) does not improve any metric
+    and significantly hurts the metric that matters most.
+
+  Next Steps:
+  1. Run the experiment longer if sample size was still accumulating.
+  2. Segment results by platform (iOS / Android) if available.
+  3. Consider testing gate_50 vs gate_30 to confirm the trend.
+  4. Analyse revenue / in-app purchase data alongside retention.
+
+
+================================================================================
+  OUTPUT FILES
+  • output/dashboard.png          — Full 6-panel analysis dashboard
+  • output/retention_funnel.png   — Retention funnel comparison
+  • output/interpretation.txt     — This report (plain text)
+================================================================================
